@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; img-src 'self' blob: data:; style-src 'self' 'unsafe-inline'; script-src 'self'; worker-src 'self'; connect-src 'none'"
+    />
+    <title>Dither Studio</title>
+    <link rel="stylesheet" href="src/style.css" />
+  </head>
+  <body>
+    <header>
+      <div class="identity">
+        <span class="mark">▦</span><strong>dither<span>studio</span></strong
+        ><small>STANDALONE</small>
+      </div>
+      <span class="local"><i></i> LOCAL PROCESSING</span
+      ><button id="open">＋ Open images <kbd>⌘O</kbd></button
+      ><button id="export" class="accent">Export PNG ↗</button>
+    </header>
+    <main>
+      <section class="workspace">
+        <div class="documentbar">
+          <div>
+            <span class="filedot"></span
+            ><span id="filename">Sculpted light · demo</span
+            ><span id="dimensions"></span>
+          </div>
+          <div class="segmented">
+            <button id="processed" class="active">Dither</button
+            ><button id="original">Original</button
+            ><button id="compare">Split view</button>
+          </div>
+        </div>
+        <div id="viewport">
+          <div class="ruler horizontal"></div>
+          <div class="ruler vertical"></div>
+          <div id="canvasWrap">
+            <canvas id="output" aria-label="Dithered image preview"></canvas
+            ><canvas id="sourcePreview"></canvas>
+            <div id="splitHandle"></div>
+            <span id="previewTag">DITHERED</span>
+          </div>
+          <div id="dropHint">Drop images to begin</div>
+        </div>
+        <div class="previewtools">
+          <span id="renderStatus" role="status">Preparing preview…</span>
+          <div>
+            <button id="zoomOut" title="Zoom out">−</button
+            ><button id="fit">Fit</button
+            ><button id="zoomIn" title="Zoom in">＋</button
+            ><span id="zoomLabel">100%</span>
+          </div>
+        </div>
+        <div class="filmstrip">
+          <div class="filmhead">
+            <span
+              >IMAGE QUEUE
+              <button id="remove" title="Remove selected image">
+                Remove selected
+              </button></span
+            ><button id="batch">Export batch ZIP ↗</button>
+          </div>
+          <div id="queue"></div>
+        </div>
+      </section>
+      <aside>
+        <div class="panelhead">
+          <div>
+            <h1>Dither controls</h1>
+            <span>Shape the signal. Find your texture.</span>
+          </div>
+          <button id="reset" title="Reset all controls">↺</button>
+        </div>
+        <div class="presets">
+          <label for="preset">PRESET</label
+          ><select id="preset">
+            <option value="custom">Custom settings</option>
+            <option value="classic">Classic bitmap</option>
+            <option value="moss" selected>Moss / organic</option>
+            <option value="amber">Amber terminal</option>
+            <option value="print">Newsprint</option>
+            <option value="retro">Retro indexed</option>
+            <option value="wave">Modulated ink</option></select
+          ><button id="savePreset" title="Save settings JSON">↓</button
+          ><button id="loadPreset" title="Load settings JSON">↑</button>
+        </div>
+        <div id="controls"></div>
+        <div class="panelbottom">
+          <button id="mask">Export grayscale mask ↗</button
+          ><button id="separations">Export color separations ↗</button
+          ><button id="help">Workflow & shortcuts <span>?</span></button>
+        </div>
+      </aside>
+    </main>
+    <footer>
+      <span>▦ DITHER STUDIO <span class="muted">/ 1.0</span></span
+      ><span id="algorithmFooter">ERROR DIFFUSION</span
+      ><span>OFFLINE · NO PHOTOSHOP REQUIRED</span>
+    </footer>
+    <input
+      id="files"
+      type="file"
+      accept="image/png,image/jpeg,image/webp,image/gif,image/bmp"
+      multiple
+      hidden
+    /><input id="paletteFile" type="file" accept="image/*" hidden /><input
+      id="settingsFile"
+      type="file"
+      accept="application/json"
+      hidden
+    />
+    <div id="toast" role="status"></div>
+    <dialog id="helpDialog">
+      <button id="closeHelp">×</button>
+      <h2>A small print laboratory.</h2>
+      <p>
+        Open or drop images, choose an algorithm, then tune the controls. Your
+        files stay on this computer.
+      </p>
+      <p>
+        <b>Scale:</b> Dither DPI sets the sampling resolution relative to source
+        DPI. Exports retain the original pixel dimensions and embed source DPI.
+      </p>
+      <p>
+        <b>Color:</b> Mono uses black and white. Tonal maps two or three inks.
+        Indexed uses an editable palette of up to 64 colors. RGB quantizes each
+        channel independently.
+      </p>
+      <p>
+        <b>Export:</b> PNG preserves transparency. Separations exports
+        individual transparent ink PNGs and a composite in a ZIP. Soft edges are
+        assigned to their closest ink. Batch exports every queued image with the
+        current settings.
+      </p>
+      <p>⌘O open · ⌘S export · Space hold original · + / − zoom · 0 fit</p>
+      <p class="muted">
+        Independent implementation inspired by the public Dithertone Pro
+        interface. Custom patterns, modulation, denoise, bleed and rounding are
+        approximations. No Photoshop layer or video timeline integration.
+        Animated inputs use their first frame; use numbered images for
+        sequences.
+      </p>
+    </dialog>
+    <script type="module" src="src/app.mjs"></script>
+  </body>
+</html>

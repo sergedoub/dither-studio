@@ -1,0 +1,11 @@
+*
+!package.json
+!package-lock.json
+!index.html
+!vite.config.mjs
+!src
+!src/**
+!assets
+!assets/icon.png
+!web
+!web/server.mjs

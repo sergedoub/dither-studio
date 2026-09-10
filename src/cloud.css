@@ -1,0 +1,211 @@
+#cloudDialog {
+  width: min(820px, 94vw);
+  max-width: 820px;
+  max-height: 88vh;
+  overflow: auto;
+}
+#cloudDialog h2 {
+  margin: 8px 0 0;
+}
+.cloud-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.cloud-heading > button {
+  font-size: 22px;
+  padding: 2px 12px;
+}
+.cloud-intro {
+  color: var(--muted);
+  max-width: 600px;
+}
+#cloudStatus {
+  padding: 10px 12px;
+  border: 1px solid var(--edge);
+  background: #10170e;
+  border-radius: 5px;
+  min-height: 42px;
+  color: var(--accent);
+}
+#cloudAuth {
+  max-width: 380px;
+  margin: 22px auto;
+}
+#cloudAuth label {
+  display: block;
+  margin: 12px 0 5px;
+}
+#cloudAuth input {
+  display: block;
+  width: 100%;
+  padding: 11px;
+  background: #11180e;
+  border: 1px solid var(--edge);
+  border-radius: 4px;
+}
+.cloud-actions {
+  display: flex;
+  gap: 8px;
+  margin: 16px 0 8px;
+}
+.cloud-account {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.cloud-account span {
+  color: var(--muted);
+}
+#cloudProjects {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+}
+#cloudProjects article {
+  padding: 10px;
+  background: #11170e;
+  border: 1px solid var(--edge);
+  border-radius: 5px;
+  min-width: 0;
+}
+#cloudProjects img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: contain;
+  background: repeating-conic-gradient(#353a34 0 25%, #292e28 0 50%) 0/12px 12px;
+}
+#cloudProjects h3 {
+  font-size: 13px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin: 8px 0;
+}
+#cloudProjects p {
+  font-size: 10px;
+  color: var(--muted);
+}
+#cloudProjects button {
+  width: 100%;
+}
+#cloudLibrary {
+  white-space: nowrap;
+}
+#cloudDialog [hidden] {
+  display: none !important;
+}
+@media (max-width: 1100px) {
+  header {
+    padding: 0 12px;
+    gap: 6px;
+  }
+  .local {
+    display: none;
+  }
+  .identity strong {
+    font-size: 22px;
+  }
+  header small {
+    display: none;
+  }
+  main {
+    grid-template-columns: minmax(400px, 1fr) 330px;
+  }
+  .documentbar {
+    padding: 0 10px;
+  }
+  #dimensions {
+    display: none;
+  }
+}
+@media (max-width: 760px) {
+  body {
+    overflow: auto;
+  }
+  header {
+    height: auto;
+    min-height: 96px;
+    flex-wrap: wrap;
+    padding: 12px;
+    position: relative;
+  }
+  .identity {
+    flex-basis: 100%;
+    justify-content: center;
+  }
+  .identity small {
+    display: block;
+  }
+  header > button {
+    flex: 1;
+    padding: 9px 5px;
+    font-size: 11px;
+  }
+  header kbd {
+    display: none;
+  }
+  main {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+  }
+  .workspace {
+    height: 70vh;
+    min-height: 490px;
+  }
+  aside {
+    border-left: 0;
+    border-top: 1px solid var(--edge);
+    overflow: visible;
+  }
+  .documentbar {
+    font-size: 10px;
+    gap: 4px;
+  }
+  .documentbar > div:first-child {
+    max-width: 46%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .segmented button {
+    font-size: 9px;
+    padding: 6px;
+  }
+  #canvasWrap {
+    margin: 25px;
+  }
+  .filmstrip {
+    height: 115px;
+  }
+  .filmhead {
+    letter-spacing: 0;
+  }
+  .panelhead {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: var(--panel);
+  }
+  footer {
+    font-size: 8px;
+    padding: 0 10px;
+  }
+  footer span:nth-child(2) {
+    display: none;
+  }
+  #cloudDialog {
+    padding: 18px;
+  }
+  .cloud-actions {
+    flex-wrap: wrap;
+  }
+  .cloud-actions button {
+    flex: 1;
+  }
+  #cloudProjects {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
