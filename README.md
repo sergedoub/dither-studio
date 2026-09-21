@@ -1,69 +1,65 @@
 # Dither Studio
 
-An offline standalone macOS image-dithering app inspired by the public Dithertone Pro panel. Open `dist/Dither Studio-darwin-arm64/Dither Studio.app`. No Photoshop, Node installation, account, or server is needed to run the packaged app.
+[![CI](https://github.com/sergedoub/dither-studio/actions/workflows/ci.yml/badge.svg)](https://github.com/sergedoub/dither-studio/actions/workflows/ci.yml)
 
-## Using the app
+Turn images into dithers, limited-color artwork, and separated ink layers. Runs in your browser or as a standalone macOS app. Local editing needs no account, Photoshop installation, or cloud service.
 
-1. Open or drop PNG, JPEG, WebP, BMP, or GIF images. GIF imports use the first frame.
-2. Pick an algorithm and Mono, Tonal, Indexed, or RGB mode.
-3. Tune the sampling scale, levels, sharpening, denoise, blur, ink colors, and edge treatment.
-4. Export a full-resolution PNG, grayscale mask, separated ink ZIP, or batch ZIP.
+![Original procedural sphere artwork and its dithered output](examples/before-after.png)
 
-Dither DPI controls sampling relative to Source DPI. At 72/300, a 1200-pixel image is dithered on a 288-pixel grid and expanded back to 1200 pixels. Source DPI is a manual print-density setting; imported metadata is not auto-detected. Exports embed PNG pHYs metadata. Preview is capped at 1000 pixels and is an approximation of the final full-resolution render.
+## What it does
 
-Indexed mode supports built-in palettes, individual color editing, and median-cut extraction of up to 64 colors from the current image or another local image. “Extract colors” controls the next extraction; solid-color images may yield fewer colors. RGB supports 2–4 levels per channel (8–64 colors). Settings can be saved and loaded as JSON.
+- 41 independent algorithm choices: error diffusion, Bayer matrices, and procedural screens.
+- Mono, tonal, indexed-palette, and RGB modes; palette extraction and editing.
+- Live previews, original/split comparison, image adjustments, sampling, and edge controls.
+- Full-resolution PNGs with DPI metadata, grayscale masks, color-separation ZIPs, batch export, and portable JSON settings.
 
-Remove the demo from the queue before exporting a batch if you do not want it included. Numbered image sequences are supported as ordinary batch inputs; filenames in the exported ZIP are prefixed in queue order.
+Inspired by [Dithertone Pro](https://www.doronsupply.com/product/dithertone-pro). This is an independent, unaffiliated implementation built from public feature descriptions, with its own code and demo artwork. Some effects are approximations; it is not a pixel-identical replacement. See [implementation and limitations](docs/limitations.md).
 
-Shortcuts: Command-O open, Command-S export, Space temporarily show original, plus/minus zoom, zero fit. The split-view divider can be dragged.
+## Run from source
 
-## Faithfulness and limits
-
-The boxed control groups, live effects, four rendering modes, palettes, DPI scaling, transparency, and separated output follow the public product reference. This is an independent implementation, with separate branding and original demo artwork. No plugin code or purchased assets were used. Reference files are excluded from the app bundle.
-
-The public feature list advertises 40+ algorithms but only explicitly names Floyd–Steinberg, Bayer, and Modulation. This app implements 41 choices independently; it does not claim the same complete proprietary algorithm roster or pixel-identical output.
-
-- Twelve conventional error-diffusion kernels and five dispersed Bayer matrix sizes.
-- Twenty-four other threshold/pattern choices, including round/diamond/square/ellipse halftones, line screens, modulation, noise, grids, and threshold.
-- Modulation and procedural patterns are visual approximations, not reverse-engineered implementations.
-- Denoise is a low-contrast selective blur. Blur is a box filter; sharpening is an unsharp mask. Bleed is morphology; rounding softens edges. These differ from undocumented plugin internals.
-- Nearest neighbor and browser low/high-quality smoothing implement resampling; the high-quality “Bicubic” setting is browser-controlled and not guaranteed to match Photoshop's bicubic filter.
-- Screen angle affects ordered and pattern algorithms. Serpentine scan affects diffusion algorithms. Tonal midtones are used only with three-color mapping.
-- Transparency removes the first palette ink (black in RGB). Original alpha is retained, subject to sampling/edge treatment.
-- Separation ZIPs contain colored transparent PNG layers, a composite, and manifest. Hard palette layers recompose exactly. Rounded/interpolated colors are assigned to the nearest ink. These are RGB spot-color assets, not ICC-managed CMYK press files or layered PSDs.
-- No Photoshop layer stack, editable PSD, native video timeline, or video codec export. Export a frame sequence externally and use batch mode for animation frames.
-- Input images are limited to 40 megapixels; sampling and multi-ink exports have additional memory limits. Large batches accumulate their ZIP in memory.
-- macOS Apple Silicon build only has been packaged and tested. It is a local development build, not Developer ID signed/notarized for public distribution.
-
-## Development
-
-The browser edition and dedicated Railway/Supabase infrastructure are documented in [Web deployment](docs/WEB-DEPLOYMENT.md). Build it with `npm run build:web`, then run `npm run start:web`. Cloud saves are optional; image processing stays in the browser.
+Requires Node.js 22.12 or later within the Node 22 release line, npm, and Git. `.nvmrc` selects Node 22. The browser edition targets current desktop browsers. macOS Apple Silicon is the tested desktop platform.
 
 ```sh
+git clone https://github.com/sergedoub/dither-studio.git
+cd dither-studio
 npm ci
-npm start
-npm test
-npm run package
+npm run build:web
+npm run start:web
 ```
 
-Electron shell uses a sandboxed renderer, context isolation, a restricted preload bridge and a native save dialog. Processing happens in disposable local Web Workers; superseded previews are cancelled. The desktop edition uses no network services.
+Open http://localhost:4782. Image processing runs on your device. Nothing uploads unless you explicitly configure and use the optional cloud library.
 
-- `src/algorithms.mjs`: diffusion kernels, ordered screens, palette extraction
-- `src/processing.mjs`: image adjustments, palette mapping, pixel expansion
-- `src/worker.mjs`: worker transport
-- `src/app.mjs`: editor UI and import/export orchestration
-- `src/export.mjs`: PNG density metadata, ZIPs, ink separation
-- `main.cjs` / `preload.cjs`: desktop window and save bridge
-- `tests/engine.test.mjs`: processing regression tests
+For the desktop app, run `npm start` from the same checkout. To build a macOS Apple Silicon app, run `npm run package`. Release downloads, when available, are on [GitHub Releases](https://github.com/sergedoub/dither-studio/releases). Desktop builds are unsigned and not notarized; managed Macs may disallow them. The browser edition is an alternative.
 
-## Verification
+For web development, `npm run dev:web` starts Vite. The optional cloud API configuration is supplied by the production server, not the Vite development server.
 
-13 tests pass: all 41 algorithms, known diffusion output, Bayer matrix ranks/order, monotonic tonal patterns, RGB quantization, zero dither amount, alpha, palette extraction, identity adjustments, pixel expansion, separated layers, and PNG DPI checksums.
+## Use it
 
-Native UI verification covered opening a transparent color fixture, PNG export, two-image batch export, and separation ZIP export. Saved files were decoded independently: original dimensions, approximately 300 DPI, transparency and pixel-exact recomposition of hard-ink layers passed. Browser UI checks covered palette extraction, RGB controls, and split comparison.
+1. Open or drop PNG, JPEG, WebP, BMP, or GIF images. GIF imports use the first frame.
+2. Choose an algorithm and rendering mode, then adjust the palette and sampling.
+3. Compare the original and dithered preview; export PNG, mask, layers, or a batch ZIP.
 
-## References
+Dither DPI controls sampling relative to Source DPI. At 72/300, a 1200-pixel source uses a 288-pixel dithering grid, expanded to its original size for export. Source DPI is entered manually; imported density metadata is not detected. Previews are capped at 1000 pixels and may differ from final full-resolution output.
 
-- [Dithertone Pro product page](https://www.doronsupply.com/product/dithertone-pro)
-- [Public panel screenshot](https://cdn.shopify.com/s/files/1/0553/3469/9198/files/aLi-rWGNHVfTOnyJ_DTP3G1.webp?v=1767738677)
-- [Electron packaging documentation](https://www.electronjs.org/docs/latest/tutorial/application-distribution)
+Remove the demo from the queue before exporting a batch if you do not want it included. Settings can be saved and loaded as JSON. Command-O opens images, Command-S exports, Space shows the original temporarily, plus/minus zoom, and zero fits the image.
+
+## Optional cloud storage
+
+The Supabase integration is **experimental**. Its authenticated live storage round-trip has not been verified for this release. Local editing and downloads work without it. [Self-hosting instructions](docs/self-hosting.md) describe using your own Railway/Docker and Supabase resources. No maintainer credentials or project connection are required or bundled.
+
+## Development and contributions
+
+```sh
+npm test
+npm run format:check
+npm run package
+npm run verify:package
+```
+
+`npm test` builds the browser distribution before running the tests. See [CONTRIBUTING.md](CONTRIBUTING.md), [architecture](docs/architecture.md), and the [roadmap](docs/roadmap.md). This is a personal project maintained on a best-effort basis, with no support SLA. Discuss major changes before implementing them.
+
+Report ordinary bugs through [issues](https://github.com/sergedoub/dither-studio/issues). Report vulnerabilities privately using [SECURITY.md](SECURITY.md).
+
+## License
+
+[MIT](LICENSE). Dependencies retain their own licenses; see [third-party notices](THIRD_PARTY_NOTICES.md). Original procedural demo artwork and project-created examples use the same MIT license.

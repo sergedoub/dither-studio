@@ -30,19 +30,17 @@ export async function saveProject(client, user, snapshot) {
       if (error) throw error;
       uploaded.push(path);
     }
-    const { error } = await client
-      .from("dither_projects")
-      .insert({
-        id,
-        owner_id: user.id,
-        name: snapshot.name.slice(0, 240) || "Untitled",
-        source_path: paths.source,
-        output_path: paths.output,
-        settings: snapshot.settings,
-        palette: snapshot.palette,
-        width: snapshot.width,
-        height: snapshot.height,
-      });
+    const { error } = await client.from("dither_projects").insert({
+      id,
+      owner_id: user.id,
+      name: snapshot.name.slice(0, 240) || "Untitled",
+      source_path: paths.source,
+      output_path: paths.output,
+      settings: snapshot.settings,
+      palette: snapshot.palette,
+      width: snapshot.width,
+      height: snapshot.height,
+    });
     if (error) throw error;
     return id;
   } catch (error) {

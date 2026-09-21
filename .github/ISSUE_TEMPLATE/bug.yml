@@ -1,0 +1,22 @@
+name: Bug report
+description: Report a reproducible problem using non-sensitive examples.
+body:
+  - type: input
+    id: version
+    attributes:
+      label: Version or commit, OS, and browser
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      description: Include settings and a synthetic or redistributable image. Never include private images or credentials.
+    validations:
+      required: true
+  - type: textarea
+    id: behavior
+    attributes:
+      label: Expected and actual behavior
+    validations:
+      required: true

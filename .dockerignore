@@ -9,3 +9,8 @@
 !assets/icon.png
 !web
 !web/server.mjs
+
+!LICENSE
+!THIRD_PARTY_NOTICES.md
+!scripts
+!scripts/build-notices.mjs
