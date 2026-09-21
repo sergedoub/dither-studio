@@ -55,15 +55,19 @@ try {
     out: path.join(root, "dist"),
     overwrite: true,
     prune: false,
-    extraResource: [
-      path.join(root, "node_modules/electron/dist/LICENSE"),
-      path.join(root, "node_modules/electron/dist/LICENSES.chromium.html"),
-    ],
     asar: true,
     electronVersion: pkg.devDependencies.electron,
     appBundleId: "com.serge.ditherstudio",
     icon: path.join(root, "assets/icon.icns"),
   });
+  for (const directory of result) {
+    for (const notice of ["LICENSE", "LICENSES.chromium.html"]) {
+      await cp(
+        path.join(directory, notice),
+        path.join(directory, "Dither Studio.app/Contents/Resources", notice),
+      );
+    }
+  }
   console.log(result.join("\n"));
 } finally {
   await rm(stage, { recursive: true, force: true });
