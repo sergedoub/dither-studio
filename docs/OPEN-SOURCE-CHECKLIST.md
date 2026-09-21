@@ -20,7 +20,7 @@ The current build has 19 passing tests. Optional cloud integration is explicitly
 ## 1. Identity, license, and attribution — before publication
 
 - [x] Use `dither-studio` as the proposed repository name; verify the intended GitHub account and name availability.
-- [x] Choose the license deliberately. MIT is a candidate for a simple permissive project; decide whether permissive reuse matches the maintainer's intention before adding license text.
+- [x] Selected MIT for permissive reuse and included the standard license text with project copyright metadata.
 - [x] Add `LICENSE` with the chosen standard text and correct copyright holder/year; add matching package metadata.
 - [x] Check licenses and required notices for dependencies and any redistributed assets; include applicable notices in source and desktop releases.
 - [x] Audit tracked files and Git history for third-party screenshots, artwork, fonts, copied code, and other material whose redistribution has not been established.
@@ -80,9 +80,9 @@ The current build has 19 passing tests. Optional cloud integration is explicitly
 - [x] Enable available private vulnerability reporting and secret scanning; configure branch protections/rules appropriate for a solo maintainer without making maintenance impractical.
 - [x] Run CI on the published commit and verify clone/build instructions from the public repository URL.
 - [x] Choose a release version that reflects maturity; align tag, package version, and visible app version.
-- [ ] Create release notes with capabilities, known issues, supported platform/architecture, and signing status.
-- [ ] If distributing binaries, attach builds from the tagged source and checksums. Do not silently reuse an older local binary.
-- [ ] Verify release download links and ensure no account-specific configuration is bundled.
+- [x] Create release notes with capabilities, known issues, supported platform/architecture, and signing status.
+- [x] If distributing binaries, attach builds from the tagged source and checksums. Do not silently reuse an older local binary.
+- [x] Verify release download links and ensure no account-specific configuration is bundled.
 
 ## Suggested structure
 

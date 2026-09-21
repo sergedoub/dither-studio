@@ -39,3 +39,13 @@ Verified September 21, 2026 for the first public release. Repository: https://gi
 - A programmatic processing API, other desktop platforms, and a managed cloud-service SLA are not included.
 
 See the published release notes and attached checksums for the exact downloadable artifact. Source tags identify each release independently of later documentation or maintenance commits.
+
+## Published release receipt
+
+- Public release: https://github.com/sergedoub/dither-studio/releases/tag/v1.0.0
+- Tagged source: `2304057873e2efe9659eb459874b9921ae5356df`.
+- Both release-candidate CI jobs passed: https://github.com/sergedoub/dither-studio/actions/runs/35662706039.
+- macOS download: `Dither-Studio-1.0.0-macos-arm64.zip`, 128,798,214 bytes.
+- SHA-256: `6cc3dd58d520035036557526206f40adb49bf2963f1404b8588de31eec7a2387`.
+- The public ZIP and checksum were downloaded without authentication. SHA-256 matched, ZIP integrity passed, and the app archive and Chromium notices were present.
+- A clone of the public GitHub repository passed dependency installation, all 19 tests, web build, and formatting. The README example image rendered at 656×320 in GitHub.
